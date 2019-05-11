@@ -22,9 +22,7 @@
             <de.hdodenhof.circleimageview.CircleImageView
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                app:civ_border_width="2dp"
                 android:id="@+id/contact_thumbnailImage"
-                app:civ_border_color="#FF000000"
                 android:layout_centerInParent="true"
                 android:scaleType="centerCrop"
                 />

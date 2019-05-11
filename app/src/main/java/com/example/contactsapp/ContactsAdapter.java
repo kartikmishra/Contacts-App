@@ -51,7 +51,12 @@ public class ContactsAdapter extends RecyclerView.Adapter<ContactsAdapter.Contac
             contactsAdapterViewHolder.contactsName.setText(mContactList.get(i).getmName());
 
             if(mContactList.get(i).getmThumnail_uri()==null){
-                contactsAdapterViewHolder.thumbnail_image.setImageResource(R.drawable.sun);
+                int[] images = new int[] {R.drawable.image6,
+                        R.drawable.image7,R.drawable.image8,R.drawable.image9,R.drawable.image10};
+                int imageId = (int)(Math.random() * images.length);
+
+                Picasso.get().load(images[imageId]).into(contactsAdapterViewHolder.thumbnail_image);
+              //  contactsAdapterViewHolder.thumbnail_image.setBackgroundResource(images[imageId]);
                 String firstLetter = mContactList.get(i).getmName().substring(0,1);
                 contactsAdapterViewHolder.thumbnail_text.setText(firstLetter);
             }

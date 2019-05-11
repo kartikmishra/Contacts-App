@@ -13,19 +13,25 @@ import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 
+import android.support.v7.widget.CardView;
+import android.support.v7.widget.LinearLayoutManager;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.squareup.picasso.Picasso;
 
+import java.util.Random;
+
 public class ContactsDetailActivity extends AppCompatActivity  {
 
     private TextView contactsName,contactsPhone,mEmail;
     private ImageView contacts_image;
-    private RelativeLayout phoneCardViewLayout;
+    private CardView imageCardView;
 
     private final int PERMISSION_REQUEST_CONTACT = 103;
     private String phone;
@@ -41,7 +47,7 @@ public class ContactsDetailActivity extends AppCompatActivity  {
         contactsName = findViewById(R.id.contacts__detail_name);
         mEmail = findViewById(R.id.contacts_detail_email);
         contacts_image = findViewById(R.id.contacts__detail_photo);
-        phoneCardViewLayout = findViewById(R.id.relLayout);
+        imageCardView = findViewById(R.id.cardView);
 
         String name = intent.getStringExtra("Name").toUpperCase();
         phone = intent.getStringExtra("PhoneNumber");
@@ -66,13 +72,19 @@ public class ContactsDetailActivity extends AppCompatActivity  {
 
         }
 
+        int[] colors = getApplicationContext().getResources().getIntArray(R.array.androidcolors);
+        int randomAndroidColor = colors[new Random().nextInt(colors.length)];
+        imageCardView.setCardBackgroundColor(randomAndroidColor);
 
         if(image_uri!=null){
+
+            RelativeLayout.LayoutParams layoutParams = new
+                    RelativeLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
+            contacts_image.setLayoutParams(layoutParams);
+            contactsName.setTextColor(getResources().getColor(R.color.black));
             Uri uri = Uri.parse(image_uri);
             Picasso.get().load(uri).into(contacts_image);
         }
-
-
 
         askForCallPermission();
 

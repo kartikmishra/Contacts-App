@@ -18,6 +18,7 @@ import android.os.Bundle;
 import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -55,8 +56,10 @@ public class MainActivity extends AppCompatActivity implements ContactsAdapter.L
         askForContactPermission();
         progressBar = findViewById(R.id.progressBar);
 
+
         progressBar.setVisibility(View.VISIBLE);
-        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this,LinearLayoutManager.VERTICAL,false);
+        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this,
+                LinearLayoutManager.VERTICAL,false);
         contactsRecyclerView.setHasFixedSize(true);
         contactsRecyclerView.setLayoutManager(linearLayoutManager);
 
@@ -64,6 +67,7 @@ public class MainActivity extends AppCompatActivity implements ContactsAdapter.L
 
         contactsRecyclerView.setAdapter(contactsAdapter);
         contactsAdapter.notifyDataSetChanged();
+
 
 
     }

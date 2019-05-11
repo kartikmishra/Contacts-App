@@ -81,7 +81,6 @@ public class ContactsDetailActivity extends AppCompatActivity  {
             RelativeLayout.LayoutParams layoutParams = new
                     RelativeLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
             contacts_image.setLayoutParams(layoutParams);
-            contactsName.setTextColor(getResources().getColor(R.color.black));
             Uri uri = Uri.parse(image_uri);
             Picasso.get().load(uri).into(contacts_image);
         }

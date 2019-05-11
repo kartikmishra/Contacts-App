@@ -37,7 +37,6 @@ import ir.mirrajabi.searchdialog.core.SearchResultListener;
 
 public class MainActivity extends AppCompatActivity implements ContactsAdapter.ListItemClickListener{
 
-    private static final String TAG = "MainActivity";
 
     private RecyclerView contactsRecyclerView;
     private ContactsAdapter contactsAdapter;

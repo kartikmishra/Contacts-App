@@ -107,7 +107,6 @@ public class ContactsDetailActivity extends AppCompatActivity  {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             if (ContextCompat.checkSelfPermission(this, Manifest.permission.CALL_PHONE) != PackageManager.PERMISSION_GRANTED) {
 
-                // Should we show an explanation?
                 if (ActivityCompat.shouldShowRequestPermissionRationale(this,
                         Manifest.permission.CALL_PHONE)) {
                     AlertDialog.Builder builder = new AlertDialog.Builder(this);
@@ -125,21 +124,16 @@ public class ContactsDetailActivity extends AppCompatActivity  {
                         }
                     });
                     builder.show();
-                    // Show an expanation to the user *asynchronously* -- don't block
-                    // this thread waiting for the user's response! After the user
-                    // sees the explanation, try again to request the permission.
+
 
                 } else {
 
-                    // No explanation needed, we can request the permission.
 
                     ActivityCompat.requestPermissions(this,
                             new String[]{Manifest.permission.CALL_PHONE},
                             PERMISSION_REQUEST_CONTACT);
 
-                    // MY_PERMISSIONS_REQUEST_READ_CONTACTS is an
-                    // app-defined int constant. The callback method gets the
-                    // result of the request.
+
                 }
             }else{
                 makeCall();
@@ -160,19 +154,15 @@ public class ContactsDetailActivity extends AppCompatActivity  {
                 if (grantResults.length > 0
                         && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                     makeCall();
-                    // permission was granted, yay! Do the
-                    // contacts-related task you need to do.
+
 
                 } else {
                     Toast.makeText(this, "No Permissions ", Toast.LENGTH_SHORT).show();
-                    // permission denied, boo! Disable the
-                    // functionality that depends on this permission.
+
                 }
                 return;
             }
 
-            // other 'case' lines to check for other
-            // permissions this app might request
         }
     }
 

@@ -68,8 +68,6 @@ public class MainActivity extends AppCompatActivity implements ContactsAdapter.L
         contactsRecyclerView.setAdapter(contactsAdapter);
         contactsAdapter.notifyDataSetChanged();
 
-
-
     }
 
     @Override
@@ -108,6 +106,8 @@ public class MainActivity extends AppCompatActivity implements ContactsAdapter.L
                 cursor.moveToFirst();
 
                 while (cursor.moveToNext()){
+                    String phoneNumber = null;
+
                     String id = cursor.getString
                             (cursor.getColumnIndex(ContactsContract.Contacts._ID));
 
@@ -121,12 +121,12 @@ public class MainActivity extends AppCompatActivity implements ContactsAdapter.L
                             (cursor.getColumnIndex(ContactsContract.Contacts.PHOTO_THUMBNAIL_URI));
 
 
+
                     Cursor phoneCursor = getApplicationContext().getContentResolver()
                             .query(ContactsContract.CommonDataKinds.Phone.CONTENT_URI,null,
                                     ContactsContract.CommonDataKinds.Phone.CONTACT_ID + " = ?",
                                     new String[]{id},null);
 
-                    String phoneNumber = null;
 
                     while (phoneCursor.moveToNext()){
                         phoneNumber = phoneCursor.getString
@@ -145,11 +145,11 @@ public class MainActivity extends AppCompatActivity implements ContactsAdapter.L
                         email = emailCursor.getString
                                 (emailCursor.getColumnIndex(ContactsContract.CommonDataKinds.Email.DATA));
                     }
-
+                    emailCursor.close();
 
                     list.add(new ContactsModel(name,phoneNumber,email,photo_uri,thumbnail_photo_uri));
                 }
-
+                cursor.close();
                 return list;
             }
 
@@ -158,11 +158,9 @@ public class MainActivity extends AppCompatActivity implements ContactsAdapter.L
 
                 if(contactsModels.size()>0)
                 {
-
                     contactList.clear();
                     progressBar.setVisibility(View.INVISIBLE);
                     contactList.addAll(contactsModels);
-
                     contactsAdapter.notifyDataSetChanged();
                 }
 
@@ -175,9 +173,9 @@ public class MainActivity extends AppCompatActivity implements ContactsAdapter.L
 
     public void askForContactPermission(){
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-            if (ContextCompat.checkSelfPermission(this,Manifest.permission.READ_CONTACTS) != PackageManager.PERMISSION_GRANTED) {
+            if (ContextCompat.checkSelfPermission(this,Manifest.permission.READ_CONTACTS)
+                    != PackageManager.PERMISSION_GRANTED) {
 
-                // Should we show an explanation?
                 if (ActivityCompat.shouldShowRequestPermissionRationale(this,
                         Manifest.permission.READ_CONTACTS)) {
                     AlertDialog.Builder builder = new AlertDialog.Builder(this);
@@ -195,21 +193,16 @@ public class MainActivity extends AppCompatActivity implements ContactsAdapter.L
                         }
                     });
                     builder.show();
-                    // Show an expanation to the user *asynchronously* -- don't block
-                    // this thread waiting for the user's response! After the user
-                    // sees the explanation, try again to request the permission.
+
 
                 } else {
 
-                    // No explanation needed, we can request the permission.
 
                     ActivityCompat.requestPermissions(this,
                             new String[]{Manifest.permission.READ_CONTACTS},
                             PERMISSION_REQUEST_CONTACT);
 
-                    // MY_PERMISSIONS_REQUEST_READ_CONTACTS is an
-                    // app-defined int constant. The callback method gets the
-                    // result of the request.
+
                 }
             }else{
                 getContactsList();
@@ -248,7 +241,6 @@ public class MainActivity extends AppCompatActivity implements ContactsAdapter.L
     @Override
     protected void onResume() {
         super.onResume();
-        getContactsList();
     }
 
     @Override

@@ -75,8 +75,7 @@ public class MainActivity extends AppCompatActivity implements ContactsAdapter.L
 
         Intent intent = new Intent(this,ContactsDetailActivity.class);
         intent.putExtra("Name",getContactsList().get(clickedItemIndex).getmName());
-        intent.putExtra("PhoneNumber",getContactsList().get(clickedItemIndex).getmPhoneNumber());
-        intent.putExtra("Email",getContactsList().get(clickedItemIndex).getmEmail());
+        intent.putExtra("ID",getContactsList().get(clickedItemIndex).getmId());
         if(getContactsList().get(clickedItemIndex).getmUri()!=null){
             intent.putExtra("Image_uri",getContactsList().get(clickedItemIndex).getmUri());
         }
@@ -106,7 +105,6 @@ public class MainActivity extends AppCompatActivity implements ContactsAdapter.L
                 cursor.moveToFirst();
 
                 while (cursor.moveToNext()){
-                    String phoneNumber = null;
 
                     String id = cursor.getString
                             (cursor.getColumnIndex(ContactsContract.Contacts._ID));
@@ -121,33 +119,33 @@ public class MainActivity extends AppCompatActivity implements ContactsAdapter.L
                             (cursor.getColumnIndex(ContactsContract.Contacts.PHOTO_THUMBNAIL_URI));
 
 
+//
+//                    Cursor phoneCursor = getApplicationContext().getContentResolver()
+//                            .query(ContactsContract.CommonDataKinds.Phone.CONTENT_URI,null,
+//                                    ContactsContract.CommonDataKinds.Phone.CONTACT_ID + " = ?",
+//                                    new String[]{id},null);
+//
+//
+//                    while (phoneCursor.moveToNext()){
+//                        phoneNumber = phoneCursor.getString
+//                                (phoneCursor.getColumnIndex(ContactsContract.CommonDataKinds.Phone.NUMBER));
+//                    }
+//                    phoneCursor.close();
+//
+//                    Cursor emailCursor = getApplicationContext().getContentResolver().query(
+//                            ContactsContract.CommonDataKinds.Email.CONTENT_URI, null,
+//                            ContactsContract.CommonDataKinds.Email.CONTACT_ID + " = ?",
+//                            new String[]{id}, ContactsContract.CommonDataKinds.Email.DISPLAY_NAME + " ASC");
+//
+//                    String email = null;
+//
+//                    while (emailCursor.moveToNext()){
+//                        email = emailCursor.getString
+//                                (emailCursor.getColumnIndex(ContactsContract.CommonDataKinds.Email.DATA));
+//                    }
+//                    emailCursor.close();
 
-                    Cursor phoneCursor = getApplicationContext().getContentResolver()
-                            .query(ContactsContract.CommonDataKinds.Phone.CONTENT_URI,null,
-                                    ContactsContract.CommonDataKinds.Phone.CONTACT_ID + " = ?",
-                                    new String[]{id},null);
-
-
-                    while (phoneCursor.moveToNext()){
-                        phoneNumber = phoneCursor.getString
-                                (phoneCursor.getColumnIndex(ContactsContract.CommonDataKinds.Phone.NUMBER));
-                    }
-                    phoneCursor.close();
-
-                    Cursor emailCursor = getApplicationContext().getContentResolver().query(
-                            ContactsContract.CommonDataKinds.Email.CONTENT_URI, null,
-                            ContactsContract.CommonDataKinds.Email.CONTACT_ID + " = ?",
-                            new String[]{id}, ContactsContract.CommonDataKinds.Email.DISPLAY_NAME + " ASC");
-
-                    String email = null;
-
-                    while (emailCursor.moveToNext()){
-                        email = emailCursor.getString
-                                (emailCursor.getColumnIndex(ContactsContract.CommonDataKinds.Email.DATA));
-                    }
-                    emailCursor.close();
-
-                    list.add(new ContactsModel(name,phoneNumber,email,photo_uri,thumbnail_photo_uri));
+                    list.add(new ContactsModel(name,id,photo_uri,thumbnail_photo_uri));
                 }
                 cursor.close();
                 return list;
@@ -158,6 +156,7 @@ public class MainActivity extends AppCompatActivity implements ContactsAdapter.L
 
                 if(contactsModels.size()>0)
                 {
+
                     contactList.clear();
                     progressBar.setVisibility(View.INVISIBLE);
                     contactList.addAll(contactsModels);

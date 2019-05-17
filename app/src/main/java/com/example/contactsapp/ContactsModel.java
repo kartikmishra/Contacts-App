@@ -5,15 +5,16 @@ import ir.mirrajabi.searchdialog.core.Searchable;
 public class ContactsModel implements Searchable {
 
     private String mName;
-    private String mPhoneNumber;
-    private String mEmail;
+    private String mId;
+
     private String mUri;
     private String mThumnail_uri;
 
-    public ContactsModel(String mName, String mPhoneNumber, String mEmail, String mUri, String mThumnail_uri) {
+
+    public ContactsModel(String mName, String mId, String mUri, String mThumnail_uri) {
         this.mName = mName;
-        this.mPhoneNumber = mPhoneNumber;
-        this.mEmail = mEmail;
+        this.mId = mId;
+
         this.mUri = mUri;
         this.mThumnail_uri = mThumnail_uri;
     }
@@ -26,21 +27,6 @@ public class ContactsModel implements Searchable {
         this.mName = mName;
     }
 
-    public String getmPhoneNumber() {
-        return mPhoneNumber;
-    }
-
-    public void setmPhoneNumber(String mPhoneNumber) {
-        this.mPhoneNumber = mPhoneNumber;
-    }
-
-    public String getmEmail() {
-        return mEmail;
-    }
-
-    public void setmEmail(String mEmail) {
-        this.mEmail = mEmail;
-    }
 
     public String getmUri() {
         return mUri;
@@ -61,5 +47,13 @@ public class ContactsModel implements Searchable {
     @Override
     public String getTitle() {
         return mName;
+    }
+
+    public String getmId() {
+        return mId;
+    }
+
+    public void setmId(String mId) {
+        this.mId = mId;
     }
 }

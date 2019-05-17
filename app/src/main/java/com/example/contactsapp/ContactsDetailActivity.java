@@ -5,8 +5,11 @@ import android.annotation.TargetApi;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.database.Cursor;
 import android.net.Uri;
+import android.os.AsyncTask;
 import android.os.Build;
+import android.provider.ContactsContract;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AlertDialog;
@@ -15,6 +18,7 @@ import android.os.Bundle;
 
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.LinearLayoutManager;
+import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
@@ -25,16 +29,23 @@ import android.widget.Toast;
 
 import com.squareup.picasso.Picasso;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Random;
 
 public class ContactsDetailActivity extends AppCompatActivity  {
 
+    private static final String TAG = "ContactsDetailActivity";
     private TextView contactsName,contactsPhone,mEmail;
     private ImageView contacts_image;
     private CardView imageCardView;
 
     private final int PERMISSION_REQUEST_CONTACT = 103;
     private String phone;
+    private String id;
+    private String phoneNumber;
+    private String email;
+    private List<ContactDetail> list = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -49,9 +60,10 @@ public class ContactsDetailActivity extends AppCompatActivity  {
         contacts_image = findViewById(R.id.contacts__detail_photo);
         imageCardView = findViewById(R.id.cardView);
 
+
         String name = intent.getStringExtra("Name").toUpperCase();
-        phone = intent.getStringExtra("PhoneNumber");
-        String email = intent.getStringExtra("Email");
+        id = intent.getStringExtra("ID");
+        Log.d(TAG, "onCreate: "+id);
         String image_uri = null;
         if(intent.getStringExtra("Image_uri")!=null){
            image_uri  = intent.getStringExtra("Image_uri");
@@ -61,16 +73,10 @@ public class ContactsDetailActivity extends AppCompatActivity  {
 
         getSupportActionBar().hide();
 
-        contactsName.setText(name);
-        contactsPhone.setText(phone);
-        if(email == null){
 
-            mEmail.setText("No email's there !!");
-        }
-        else {
-            mEmail.setText(email);
+          contactsName.setText(name);
 
-        }
+
 
         int[] colors = getApplicationContext().getResources().getIntArray(R.array.androidcolors);
         int randomAndroidColor = colors[new Random().nextInt(colors.length)];
@@ -86,6 +92,13 @@ public class ContactsDetailActivity extends AppCompatActivity  {
         }
 
         askForCallPermission();
+
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        getContacts(id);
 
     }
 
@@ -136,12 +149,76 @@ public class ContactsDetailActivity extends AppCompatActivity  {
 
                 }
             }else{
+
                 makeCall();
             }
         }
         else{
             makeCall();
         }
+    }
+
+    public List<ContactDetail> getContacts(final String ids){
+
+
+
+        new AsyncTask<String, Void, List<ContactDetail>>() {
+            @Override
+            protected List<ContactDetail> doInBackground(String... strings) {
+
+                List<ContactDetail> list = new ArrayList<>();
+
+                Cursor phoneCursor =  getApplicationContext().getContentResolver()
+                        .query(ContactsContract.CommonDataKinds.Phone.CONTENT_URI,null,
+                                ContactsContract.CommonDataKinds.Phone.CONTACT_ID + " = ?",
+                                new String[]{ids},null);
+
+
+
+                if (phoneCursor!=null && phoneCursor.moveToFirst()){
+                    phoneNumber = phoneCursor.getString
+                            (phoneCursor.getColumnIndex(ContactsContract.CommonDataKinds.Phone.NUMBER));
+                }
+                phoneCursor.close();
+
+                Cursor emailCursor = getApplicationContext().getContentResolver().query(
+                        ContactsContract.CommonDataKinds.Email.CONTENT_URI, null,
+                        ContactsContract.CommonDataKinds.Email.CONTACT_ID + " = ?",
+                        new String[]{ids}, ContactsContract.CommonDataKinds.Email.DISPLAY_NAME + " ASC");
+
+
+                if (emailCursor!=null && emailCursor.moveToFirst()){
+                    email = emailCursor.getString
+                            (emailCursor.getColumnIndex(ContactsContract.CommonDataKinds.Email.DATA));
+                }
+                emailCursor.close();
+
+                list.add(new ContactDetail(phoneNumber,email));
+
+                return list;
+            }
+
+            @Override
+            protected void onPostExecute(List<ContactDetail> contactDetails) {
+
+                if(contactDetails.size()>0){
+                    list.clear();
+                    list.addAll(contactDetails);
+
+                    contactsPhone.setText(phoneNumber);
+                    if(mEmail==null){
+                        mEmail.setText("No email's there");
+                    }
+                    else {
+                        mEmail.setText(email);
+                    }
+
+
+                }
+            }
+        }.execute();
+
+        return list;
     }
 
 

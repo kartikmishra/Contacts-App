@@ -35,12 +35,12 @@ import java.util.Random;
 
 public class ContactsDetailActivity extends AppCompatActivity  {
 
+    private static final String TAG = "ContactsDetailActivity";
     private TextView contactsName,contactsPhone,mEmail;
     private ImageView contacts_image;
     private CardView imageCardView;
 
     private final int PERMISSION_REQUEST_CONTACT = 103;
-    private String phone;
     private String id;
     private String phoneNumber;
     private String email;
@@ -101,7 +101,7 @@ public class ContactsDetailActivity extends AppCompatActivity  {
             public void onClick(View v) {
 
                 Intent callIntent = new Intent(Intent.ACTION_CALL);
-                callIntent.setData(Uri.parse("tel:"+phone));
+                callIntent.setData(Uri.parse("tel:"+ phoneNumber));
                 startActivity(callIntent);
             }
         });

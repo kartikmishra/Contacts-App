@@ -38,6 +38,7 @@ import ir.mirrajabi.searchdialog.core.SearchResultListener;
 
 public class MainActivity extends AppCompatActivity implements ContactsAdapter.ListItemClickListener{
 
+    private static final String TAG = "MainActivity";
 
     private RecyclerView contactsRecyclerView;
     private ContactsAdapter contactsAdapter;
@@ -239,12 +240,16 @@ public class MainActivity extends AppCompatActivity implements ContactsAdapter.L
                 "Search a Contact here....", null, (ArrayList)
                 ContactsAdapter.mContactList,new SearchResultListener<ContactsModel>(){
             @Override
-            public void onSelected(BaseSearchDialogCompat baseSearchDialogCompat, ContactsModel contactsModel, int i) {
+            public void onSelected(BaseSearchDialogCompat baseSearchDialogCompat,
+                                   ContactsModel contactsModel, int i) {
 
                   p[0] = ContactsAdapter.mContactList.indexOf(contactsModel);
 
                 contactsRecyclerView.scrollToPosition(p[0]);
                 baseSearchDialogCompat.dismiss();
+                String result = baseSearchDialogCompat.getFilter()
+                        .convertResultToString(contactsModel.getmName()).toString();
+                Log.d(TAG, "onSelected: "+result);
             }
         }).show();
 

@@ -35,7 +35,6 @@ import java.util.Random;
 
 public class ContactsDetailActivity extends AppCompatActivity  {
 
-    private static final String TAG = "ContactsDetailActivity";
     private TextView contactsName,contactsPhone,mEmail;
     private ImageView contacts_image;
     private CardView imageCardView;
@@ -63,7 +62,6 @@ public class ContactsDetailActivity extends AppCompatActivity  {
 
         String name = intent.getStringExtra("Name").toUpperCase();
         id = intent.getStringExtra("ID");
-        Log.d(TAG, "onCreate: "+id);
         String image_uri = null;
         if(intent.getStringExtra("Image_uri")!=null){
            image_uri  = intent.getStringExtra("Image_uri");
@@ -113,7 +111,8 @@ public class ContactsDetailActivity extends AppCompatActivity  {
     public void askForCallPermission(){
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-            if (ContextCompat.checkSelfPermission(this, Manifest.permission.CALL_PHONE) != PackageManager.PERMISSION_GRANTED) {
+            if (ContextCompat.checkSelfPermission(this, Manifest.permission.CALL_PHONE)
+                    != PackageManager.PERMISSION_GRANTED) {
 
                 if (ActivityCompat.shouldShowRequestPermissionRationale(this,
                         Manifest.permission.CALL_PHONE)) {

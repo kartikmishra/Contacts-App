@@ -194,19 +194,15 @@ public class MainActivity extends AppCompatActivity implements ContactsAdapter.L
                 if (grantResults.length > 0
                         && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                     getContactsList();
-                    // permission was granted, yay! Do the
-                    // contacts-related task you need to do.
+
 
                 } else {
                     Toast.makeText(this, "No Permissions ", Toast.LENGTH_SHORT).show();
-                    // permission denied, boo! Disable the
-                    // functionality that depends on this permission.
+
                 }
                 return;
             }
 
-            // other 'case' lines to check for other
-            // permissions this app might request
         }
     }
 
@@ -237,6 +233,7 @@ public class MainActivity extends AppCompatActivity implements ContactsAdapter.L
 
     private void doSearch() {
 
+        final int[] p = new int[1];
 
         new SimpleSearchDialogCompat(MainActivity.this, "Search....",
                 "Search a Contact here....", null, (ArrayList)
@@ -244,14 +241,12 @@ public class MainActivity extends AppCompatActivity implements ContactsAdapter.L
             @Override
             public void onSelected(BaseSearchDialogCompat baseSearchDialogCompat, ContactsModel contactsModel, int i) {
 
-                int p = ContactsAdapter.mContactList.indexOf(contactsModel);
+                  p[0] = ContactsAdapter.mContactList.indexOf(contactsModel);
 
-                contactsRecyclerView.scrollToPosition(p);
+                contactsRecyclerView.scrollToPosition(p[0]);
                 baseSearchDialogCompat.dismiss();
             }
         }).show();
-
-        contactsRecyclerView.smoothScrollToPosition(contactsAdapter.getItemCount());
 
     }
 }

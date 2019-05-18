@@ -118,33 +118,6 @@ public class MainActivity extends AppCompatActivity implements ContactsAdapter.L
                     String thumbnail_photo_uri = cursor.getString
                             (cursor.getColumnIndex(ContactsContract.Contacts.PHOTO_THUMBNAIL_URI));
 
-
-//
-//                    Cursor phoneCursor = getApplicationContext().getContentResolver()
-//                            .query(ContactsContract.CommonDataKinds.Phone.CONTENT_URI,null,
-//                                    ContactsContract.CommonDataKinds.Phone.CONTACT_ID + " = ?",
-//                                    new String[]{id},null);
-//
-//
-//                    while (phoneCursor.moveToNext()){
-//                        phoneNumber = phoneCursor.getString
-//                                (phoneCursor.getColumnIndex(ContactsContract.CommonDataKinds.Phone.NUMBER));
-//                    }
-//                    phoneCursor.close();
-//
-//                    Cursor emailCursor = getApplicationContext().getContentResolver().query(
-//                            ContactsContract.CommonDataKinds.Email.CONTENT_URI, null,
-//                            ContactsContract.CommonDataKinds.Email.CONTACT_ID + " = ?",
-//                            new String[]{id}, ContactsContract.CommonDataKinds.Email.DISPLAY_NAME + " ASC");
-//
-//                    String email = null;
-//
-//                    while (emailCursor.moveToNext()){
-//                        email = emailCursor.getString
-//                                (emailCursor.getColumnIndex(ContactsContract.CommonDataKinds.Email.DATA));
-//                    }
-//                    emailCursor.close();
-
                     list.add(new ContactsModel(name,id,photo_uri,thumbnail_photo_uri));
                 }
                 cursor.close();

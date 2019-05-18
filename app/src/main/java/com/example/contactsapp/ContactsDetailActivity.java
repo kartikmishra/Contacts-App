@@ -93,11 +93,6 @@ public class ContactsDetailActivity extends AppCompatActivity  {
 
         askForCallPermission();
 
-    }
-
-    @Override
-    protected void onResume() {
-        super.onResume();
         getContacts(id);
 
     }
@@ -206,7 +201,7 @@ public class ContactsDetailActivity extends AppCompatActivity  {
                     list.addAll(contactDetails);
 
                     contactsPhone.setText(phoneNumber);
-                    if(mEmail==null){
+                    if(email==null){
                         mEmail.setText("No email's there");
                     }
                     else {
